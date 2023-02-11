@@ -38,6 +38,7 @@
     }
 }
 
+
 .background-container {
     position: fixed;
     top: 0;
@@ -103,9 +104,10 @@ img {
 }
 
 .container {
+      
     position: absolute;
     z-index: 999;
-    left: 2rem;
+    left: 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -113,21 +115,19 @@ img {
 }
 
 .continentsButtons {
-width: 100vw;
-/* height: 40rem; */
-    /* position: absolute; */
+    width: 100vw;
+
     display: flex;
-    /* justify-content: space-between; */
     align-items: center;
     justify-content: center;
-    margin-top: 4rem;
+    margin-top: 3rem;
 
 }
 
 .title {
     position: absolute;
     z-index: 4;
-    margin-top: 1rem;
+    margin-top: 0.3rem;
     text-align: center;
     color: red;
     width: 100vw;
@@ -143,23 +143,26 @@ width: 100vw;
         color: blue;
     }
 }
-
-.btnContinent {
+#padding{
     padding: 1rem;
-    margin: 0.5rem;
+    background-color: lightblue;
+
+}
+.btnContinent {
+    margin: 0.8px;
     background-color: lightblue;
     border: none;
     border-radius: 5px;
-    /* font-size: 16px; */
     cursor: pointer;
 }
-.height{
+
+.height {
     height: 1000rem;
 }
+
 .countriesButtons {
     display: flex;
     margin-left: 1rem;
-    /* width: 20rem; */
 }
 
 #myChart {
@@ -189,7 +192,7 @@ width: 100vw;
     animation: spin 2s linear infinite;
 }
 
-/* Safari */
+
 @-webkit-keyframes spin {
     0% {
         -webkit-transform: rotate(0deg);
