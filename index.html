@@ -11,26 +11,34 @@
 </head>
 
 <body>
-    <div class="containerSpinner">
-        <div class="spinner"></div>
-    </div>
-  
-
-    <div class="container">
-        <div class="continentsButtons">
-            <input type="button" value="Africa" class="btnContinent">
-            <input type="button" value="America" class="btnContinent">
-            <input type="button" value="Asia" class="btnContinent">
-            <input type="button" value="Europe" class="btnContinent">
-            <input type="button" value="Oceania" class="btnContinent">
+    <div class="background-container">
+        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/moon2.png" alt="">
+        <div class="stars"></div>
+        <div class="twinkling"></div>
+        <div class="clouds"></div>
+        <div class="containerSpinner">
+            <div class="spinner"></div>
         </div>
-        <canvas id="myChart" style="display: block; height: 70vh; width: 90vw;"></canvas>
+        <h1 class="title">world population</h1>
 
-        <div class="countriesButtons"></div>
-    </div>
 
-    <script src="/js/api.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+        <div class="container">
+
+            <div class="continentsButtons">
+                <input type="button" value="Africa" class="btnContinent">
+                <input type="button" value="America" class="btnContinent">
+                <input type="button" value="Asia" class="btnContinent">
+                <input type="button" value="Europe" class="btnContinent">
+                <input type="button" value="Oceania" class="btnContinent">
+            </div>
+            <canvas id="myChart" style="display: block; height: 70vh; width: 90vw;"></canvas>
+            <div class="height">
+                <div class="countriesButtons"></div>
+            </div>
+        </div>
+
+        <script src="/js/api.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
 
 </body>
 

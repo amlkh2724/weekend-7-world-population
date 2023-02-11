@@ -1,11 +1,13 @@
 
+
+
 let chartOne;
 let chartTwo;
 let countriesButtons = document.querySelector(".countriesButtons");
 let continentsButtons = document.querySelector(".continentsButtons");
 let spinner = document.querySelector(".spinner");
 
-  function randomColorsCharTwo() {
+function randomColorsCharTwo() {
     let colors = [];
     for (let i = 0; i < citiesPopulationArr.length; i++) {
         let color = '#' + Math.floor(Math.random() * 16777215).toString(16);
@@ -42,12 +44,12 @@ async function getContinent(e) {
     // Clears the previous chart instance
     if (chartTwo) chartTwo.destroy();
     if (chartOne) chartOne.destroy()
-    
+
     countriesButtons.innerHTML = "";
     let continentData = await fetch(
         `https://restcountries.com/v3.1/region/${e.target.value}`
     );
-     continentDataApi = await continentData.json();
+    continentDataApi = await continentData.json();
     console.log(continentDataApi);
 
     continentDataApi.forEach((countryNames) => {
@@ -70,7 +72,7 @@ async function getContinent(e) {
                     backgroundColor: randomColorsChartOne(),
                     borderColor: randomBorderColorsChartOne(),
                     borderWidth: 2
-                  
+
                 },
             ],
         },
@@ -144,13 +146,13 @@ async function getCountriesCitiesData(e) {
                         label: "Population (in thousands)",
                         data: citiesPopulationArr.map(population => population / 1000),
                         backgroundColor: randomColorsCharTwo(),
-                        
+
                         borderColor: randomColorsCharTwo(),
                         borderWidth: 5
                     }
                 ]
             },
-           
+
 
             options: {
                 scales: {
@@ -165,7 +167,7 @@ async function getCountriesCitiesData(e) {
                 }
             }
         });
-    
+
         // Hide the spinner
         spinner.style.display = "none";
 
