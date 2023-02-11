@@ -1,11 +1,25 @@
 
+let chartOne;
+let chartTwo;
 let countriesButtons = document.querySelector(".countriesButtons");
 let continentsButtons = document.querySelector(".continentsButtons");
+let spinner = document.querySelector(".spinner");
 
 continentsButtons.addEventListener("click", getContinent);
 countriesButtons.addEventListener("click", getCountriesCitiesData);
+spinner.style.display = "none";
 
 async function getContinent(e) {
+    countriesButtons.style.display = "block";
+    spinner.style.display = "block";
+
+    // Clears the previous chart instance
+    if (chartTwo) chartTwo.destroy();
+    if (chartOne) {
+        chartOne.destroy()
+    }
+    
+
     countriesButtons.innerHTML = "";
     let continentData = await fetch(
         `https://restcountries.com/v3.1/region/${e.target.value}`
@@ -22,7 +36,7 @@ async function getContinent(e) {
     });
     let ctx = document.getElementById("myChart").getContext("2d");
 
-    new Chart(ctx, {
+    chartOne = new Chart(ctx, {
         type: 'bar',
         data: {
             labels: continentDataApi.map(country => country.name.common),
@@ -30,78 +44,108 @@ async function getContinent(e) {
                 {
                     label: "Population (in thousands)",
                     data: continentDataApi.map(country => country.population / 1000),
+
                 },
             ],
         },
         options: {
-            responsive: false
-        }
+            beginAtZero: true,
+
+        },
+
     });
+    spinner.style.display = "none";
 }
+
 let citiesNamesArr = [];
 let citiesPopulationArr = [];
 async function getCountriesCitiesData(e) {
+    // Show the spinner
+    let spinner = document.querySelector(".spinner");
+    spinner.style.display = "block";
+    continentsButtons.style.display="none"
+
     try {
-      const response = await fetch(
-        "https://countriesnow.space/api/v0.1/countries/population/cities/filter",
-        {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            country: `${e.target.innerText}`
-          })
+        // Hides the country buttons
+        countriesButtons.style.display = "none";
+
+        // Clears the previous chart instance
+        if (chartTwo) chartTwo.destroy();
+        if (chartOne) {
+            chartOne.destroy()
         }
-      );
-      let data = await response.json();
-      citiesNamesArr = [];
-      citiesPopulationArr = [];
-      if (!response.ok) throw Error("ERROR!!");
-      data.data.forEach(cityName => {
-        citiesNamesArr.push(cityName.city);
-        citiesPopulationArr.push(cityName.populationCounts[0].value);
-      });
-      console.log(citiesPopulationArr);
-      console.log(citiesNamesArr);
-      let ctx = document.getElementById("myChart").getContext("2d");
-      new Chart(ctx, {
-        type: "bar",
-        data: {
-          labels: citiesNamesArr,
-          datasets: [
+
+        // Makes a fetch request to the API
+        const response = await fetch(
+            "https://countriesnow.space/api/v0.1/countries/population/cities/filter",
             {
-              label: "Population (in thousands)",
-              data: citiesPopulationArr.map(population => population / 1000),
-              backgroundColor: "#3e95cd",
-              borderColor: "#3e95cd"
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    country: `${e.target.innerText}`
+                })
             }
-          ]
-        },
-        options: {
-          responsive: false,
-          scales: {
-            yAxes: [
-              {
-                ticks: {
-                  beginAtZero: true,
-                  callback: function(value) {
-                    return value + "k";
-                  }
+        );
+
+        // Converts the response to JSON format
+        let data = await response.json();
+
+        // Empties the arrays for the cities names and populations
+        citiesNamesArr = [];
+        citiesPopulationArr = [];
+
+        // Throws an error if the response is not ok
+        if (!response.ok) throw Error("ERROR!!");
+
+        // Loops through the data and pushes the city names and populations to the arrays
+        data.data.forEach(cityName => {
+            citiesNamesArr.push(cityName.city);
+            citiesPopulationArr.push(cityName.populationCounts[0].value);
+        });
+
+        // Gets the context of the chart
+        let ctx = document.getElementById("myChart").getContext("2d");
+        // Creates a new chart
+        chartTwo = new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: citiesNamesArr,
+                datasets: [
+                    {
+                        label: "Population (in thousands)",
+                        data: citiesPopulationArr.map(population => population / 1000),
+                        backgroundColor: "#3e95cd",
+                        borderColor: "#3e95cd"
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                    },
+                },
+                title: {
+                    display: true,
+                    text: `Population of Cities in ${e.target.innerText}`,
+                    fontSize: 20
                 }
-              }
-            ]
-          },
-          title: {
-            display: true,
-            text: `Population of Cities in ${e.target.innerText}`,
-            fontSize: 50
-          }
-        }
-      });
+            }
+        });
+        // Hide the spinner
+        
+        spinner.style.display = "none";
+        continentsButtons.style.display="block"
+
+
     } catch (error) {
-      console.log(error);
-      alert(`No cities data available for ${e.target.innerText}`);
+        console.error("Error:", error);
     }
-  }
+
+}
+
+
+
