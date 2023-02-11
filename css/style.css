@@ -13,8 +13,9 @@
 }
 
 .btnContinent {
-    padding: 1.2rem;
-    margin-left: 0.5rem;
+    padding: 1rem;
+    margin: 0.5rem;
+    /* margin-left: 0.5rem; */
     background-color: lightblue;
     border: none;
     border-radius: 5px;
@@ -24,9 +25,6 @@
 
 .countriesButtons {
     display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1rem;
     margin-left: 1rem;
 }
 

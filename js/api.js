@@ -5,6 +5,32 @@ let countriesButtons = document.querySelector(".countriesButtons");
 let continentsButtons = document.querySelector(".continentsButtons");
 let spinner = document.querySelector(".spinner");
 
+  function randomColorsCharTwo() {
+    let colors = [];
+    for (let i = 0; i < citiesPopulationArr.length; i++) {
+        let color = '#' + Math.floor(Math.random() * 16777215).toString(16);
+        colors.push(color);
+    }
+    return colors;
+}
+let continentDataApi
+function randomColorsChartOne() {
+    let colors = [];
+    for (let i = 0; i < continentDataApi.length; i++) {
+        let color = '#' + Math.floor(Math.random() * 16777215).toString(16);
+        colors.push(color);
+    }
+    return colors;
+}
+function randomBorderColorsChartOne() {
+    let borderColors = [];
+    for (let i = 0; i < continentDataApi.length; i++) {
+        let color = '#' + Math.floor(Math.random() * 16777215).toString(16);
+        borderColors.push(color);
+    }
+    return borderColors;
+}
+
 continentsButtons.addEventListener("click", getContinent);
 countriesButtons.addEventListener("click", getCountriesCitiesData);
 spinner.style.display = "none";
@@ -15,16 +41,13 @@ async function getContinent(e) {
 
     // Clears the previous chart instance
     if (chartTwo) chartTwo.destroy();
-    if (chartOne) {
-        chartOne.destroy()
-    }
+    if (chartOne) chartOne.destroy()
     
-
     countriesButtons.innerHTML = "";
     let continentData = await fetch(
         `https://restcountries.com/v3.1/region/${e.target.value}`
     );
-    let continentDataApi = await continentData.json();
+     continentDataApi = await continentData.json();
     console.log(continentDataApi);
 
     continentDataApi.forEach((countryNames) => {
@@ -44,7 +67,10 @@ async function getContinent(e) {
                 {
                     label: "Population (in thousands)",
                     data: continentDataApi.map(country => country.population / 1000),
-
+                    backgroundColor: randomColorsChartOne(),
+                    borderColor: randomBorderColorsChartOne(),
+                    borderWidth: 2
+                  
                 },
             ],
         },
@@ -59,11 +85,11 @@ async function getContinent(e) {
 
 let citiesNamesArr = [];
 let citiesPopulationArr = [];
+
 async function getCountriesCitiesData(e) {
     // Show the spinner
     let spinner = document.querySelector(".spinner");
     spinner.style.display = "block";
-    continentsButtons.style.display="none"
 
     try {
         // Hides the country buttons
@@ -97,8 +123,8 @@ async function getCountriesCitiesData(e) {
         citiesNamesArr = [];
         citiesPopulationArr = [];
 
-        // Throws an error if the response is not ok
-        if (!response.ok) throw Error("ERROR!!");
+        // Throws an error if the response is not ok or if no cities were found
+        if (!response.ok || data.data.length === 0) throw Error("No cities found for the selected country");
 
         // Loops through the data and pushes the city names and populations to the arrays
         data.data.forEach(cityName => {
@@ -117,11 +143,15 @@ async function getCountriesCitiesData(e) {
                     {
                         label: "Population (in thousands)",
                         data: citiesPopulationArr.map(population => population / 1000),
-                        backgroundColor: "#3e95cd",
-                        borderColor: "#3e95cd"
+                        backgroundColor: randomColorsCharTwo(),
+                        
+                        borderColor: randomColorsCharTwo(),
+                        borderWidth: 5
                     }
                 ]
             },
+           
+
             options: {
                 scales: {
                     y: {
@@ -135,17 +165,21 @@ async function getCountriesCitiesData(e) {
                 }
             }
         });
+    
         // Hide the spinner
-        
         spinner.style.display = "none";
-        continentsButtons.style.display="block"
-
 
     } catch (error) {
         console.error("Error:", error);
-    }
+        // Hide the spinner
+        spinner.style.display = "none";
 
+        // Show an error message
+        // alert(error);
+    }
 }
+
+
 
 
 
